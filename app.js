@@ -21,8 +21,8 @@ var frequency = 0;
 $("#train-add").on("click", function(event){
 	event.preventDefault();
 
-	var name = $("#name-input").val().trim();
-  	var destin = $("#des-input").val().trim();
+    var name = $("#name-input").val().trim();
+    var destin = $("#des-input").val().trim();
   	var time = $("#first-input").val().trim();
   	var frequency = $("#freqency-input").val().trim();
 
@@ -38,18 +38,18 @@ $("#train-add").on("click", function(event){
 });
 // / Firebase watcher 
    
-      // storing the snapshot.val() in a variable for convenience
+    
 
 database.ref().on("child_added", function(snapshot) {
 
-
+  // storing the snapshot.val() in a variable for convenience
       var sv = snapshot.val();
 
       // Console.loging the last user's data
-      console.log(sv.name);
-      console.log(sv.destin);
-      console.log(sv.time);
-      console.log(sv.frequency);
+      // console.log(sv.name);
+      // console.log(sv.destin);
+      // console.log(sv.time);
+      // console.log(sv.frequency);
 
       name = sv.name;
       destin = sv.destin;
@@ -58,7 +58,7 @@ database.ref().on("child_added", function(snapshot) {
 
 
 	// First Time (pushed back 1 year to make sure it comes before current time)
-    var firstTimeConverted = moment(time, "hh:mm").subtract(1, "years");
+    var firstTime = moment(time, "hh:mm").subtract(1, "years");
     // console.log(firstTimeConverted);
 
     // Current Time
@@ -66,19 +66,19 @@ database.ref().on("child_added", function(snapshot) {
     // console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
 
     // Difference between the times
-    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    var diffTime = moment().diff(moment(firstTime), "minutes");
     // console.log("DIFFERENCE IN TIME: " + diffTime);
 
     // Time apart (remainder)
-    var tRemainder = diffTime % frequency;
+    var remainder = diffTime % frequency;
     // console.log(tRemainder);
 
     // Minute Until Train
-    var tMinutesTillTrain = frequency - tRemainder;
-    // console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+    var tTill = frequency - remainder;
+    // console.log("MINUTES TILL TRAIN: " + tTill);
 
     // Next Train
-    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    var nextTrain = moment().add(tTill, "minutes");
     // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
     var nTrain = moment(nextTrain).format("HH:mm");
@@ -89,7 +89,7 @@ database.ref().on("child_added", function(snapshot) {
     newRow.append($("<td>").html(destin));
     newRow.append($("<td>").html(frequency));
     newRow.append($("<td>").html(nTrain));
-    newRow.append($("<td>").html(tMinutesTillTrain));
+    newRow.append($("<td>").html(tTill));
 
     $("#train-info").append(newRow);
 
