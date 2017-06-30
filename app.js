@@ -26,7 +26,7 @@ $("#train-add").on("click", function(event){
   	var time = $("#first-input").val().trim();
   	var frequency = $("#freqency-input").val().trim();
 
-// Code for handling the push
+// Code for handling the push to Firebase
 	database.ref().push({
         name: name,
         destin: destin,
@@ -78,10 +78,10 @@ database.ref().on("child_added", function(snapshot) {
     // console.log("MINUTES TILL TRAIN: " + tTill);
 
     // Next Train
-    var nextTrain = moment().add(tTill, "minutes");
+    var nTrain = moment().add(tTill, "HH:mm");
     // console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
-    var nTrain = moment(nextTrain).format("HH:mm");
+  
 
 // add everything to HTML page.
     var newRow = $("<tr>");
